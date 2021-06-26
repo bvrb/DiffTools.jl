@@ -1,0 +1,7 @@
+name = "DiffTools"
+uuid = "7da30d42-16d1-4767-bc59-b55aaf19dffb"
+authors = ["bvrb <bvrb@posteo.org>"]
+version = "0.0.1"
+
+[deps]
+ForwardDiff = "f6369f11-7733-5829-9624-2563aa707210"
