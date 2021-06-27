@@ -23,3 +23,4 @@ using Test
         @test ∂(f, -1 + im) == 3ℯ^(-3) * cis(3)
     end
 end
+;
