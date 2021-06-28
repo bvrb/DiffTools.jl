@@ -1,19 +1,32 @@
+# Wrappers to the ForwardDiff (https://github.com/JuliaDiff/ForwardDiff.jl) package in 
+# order to allow for derivatives of complex functions
 
+"""
+    [∂|derivative](f, x)
+
+Directly call `ForwardDiff.derivative(f, x)`.
+"""
 ∂(f, x) = ForwardDiff.derivative(f, x)
 
+"""
+    intermediate_jacobian(f, z::Complex)
 
+Calculate Jacobian matrix for the complex function ``f(z) = u + iv`` interpreted as the 
+transformation ``(x,y)ᵀ → (u(x,y), v(x,y))ᵀ`` via ForwardDiff.
+"""
 function intermediate_jacobian(f, z::Complex)
     result = ForwardDiff.jacobian(x -> complex_to_vector(f(vector_to_complex(SVector{2}(x)))), complex_to_vector(z))
     return SMatrix{2,2}(result)
 end
 
 """
-    function ∂(f, z::Complex)
+    function [∂|derivative](f, z::Complex)
 
-Calculates the derivative of a holomorphic complex-valued function `f` with complex argument `z` via automatic differentiation using ForwardDiff.
+Calculate the derivative of a holomorphic complex-valued function `f` with complex 
+argument `z` via automatic differentiation using ForwardDiff.
 """
 function ∂(f, z::Complex)
-    index = @SVector [1,2]
+    index = SVector{2}(1,2)
     result = intermediate_jacobian(f, z)[index]
     return vector_to_complex(result)
 end
@@ -26,3 +39,6 @@ function ∂(f, z::Complex{Int})
     z = convert(ComplexF64, z)
     ∂(f, z)
 end
+
+# Create more verbose alias
+const derivative = ∂

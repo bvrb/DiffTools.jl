@@ -1,5 +1,7 @@
-using DiffTools: ∂
+using DiffTools: DiffTools, ∂
 using Test
+
+println("Running " * @__FILE__)
 
 @testset "Example derivatives" begin
     @testset begin 
@@ -23,4 +25,26 @@ using Test
         @test ∂(f, -1 + im) == 3ℯ^(-3) * cis(3)
     end
 end
+
+@testset "Cauchy-Riemann" begin
+# Since we are calculating all four partial derivatives for 
+# ``f(x + iy) = u(x,y) + iv(x,y)`` anyway, check that the 
+# Cauchy-Riemann equations are fullfilled
+    @testset begin 
+        f(z) = 3z*z - 4z + 10 
+        jacobian = DiffTools.intermediate_jacobian(f, 2 - 3im)
+        ∂u∂x, ∂v∂x, ∂u∂y, ∂v∂y = jacobian
+        @test ∂u∂x == ∂v∂y
+        @test ∂u∂y == -∂v∂x
+    end
+
+    @testset begin 
+        f(z) = exp(3*z)
+        jacobian = DiffTools.intermediate_jacobian(f, -4 - 5im)
+        ∂u∂x, ∂v∂x, ∂u∂y, ∂v∂y = jacobian
+        @test ∂u∂x == ∂v∂y
+        @test ∂u∂y ≈ -∂v∂x
+    end
+end
+
 ;
