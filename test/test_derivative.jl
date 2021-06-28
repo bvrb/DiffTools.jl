@@ -29,7 +29,7 @@ end
 @testset "Cauchy-Riemann" begin
 # Since we are calculating all four partial derivatives for 
 # ``f(x + iy) = u(x,y) + iv(x,y)`` anyway, check that the 
-# Cauchy-Riemann equations are fullfilled
+# Cauchy-Riemann equations are fulfilled
     @testset begin 
         f(z) = 3z*z - 4z + 10 
         jacobian = DiffTools.intermediate_jacobian(f, 2 - 3im)
