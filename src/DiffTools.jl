@@ -1,5 +1,8 @@
 module DiffTools
 
-greet() = print("Hello World!")
+using StaticArrays, ForwardDiff
+
+include("utilities.jl")
+include("derivative.jl")
 
 end # module
