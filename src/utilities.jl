@@ -9,3 +9,13 @@ end
 function complex_to_vector(z::Complex)
     return SVector{2}(real(z), imag(z))
 end
+
+"""
+    first_column(A::SMatrix{2,2})
+
+Extract first column of a 2x2 SMatrix.
+"""
+function first_column(A::SMatrix{2,2})
+    index = SVector{2}(1,2)
+    return A[index]
+end
